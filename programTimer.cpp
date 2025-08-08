@@ -24,9 +24,16 @@ class Timer{
 int main(){
     Timer programTimer{};
 
-    system("./sleepTest");
+    
+    //Create function for system call.
+    constexpr auto systemCallSuccess{0};
+
+    if(system("./sleepTest") != systemCallSuccess){
+        std::cerr << "system call failed. Exiting program timer.\n";
+        exit(EXIT_FAILURE);
+    };
 
     std::cout << "Program Completed time elapsed: " << programTimer.elapsed() <<"\n";
 
-    return 0;
+    return EXIT_SUCCESS;
 }
