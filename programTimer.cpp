@@ -1,6 +1,7 @@
+#include <iostream>
 #include <chrono>
-#include <thread>
-#include <unistd.h> //delete after removing sleep()
+#include <cstdlib> //for system()
+#include <unistd.h> //delete after removing sleep()/need for exec?
 
 class Timer{
     public:
@@ -20,15 +21,12 @@ class Timer{
         std::chrono::time_point<Clock> m_startTime{Clock::now()};
 };
 
-//Should return runtime of program.
-void timeProgram(){
-    sleep(2);
-}
-
 int main(){
-    std::thread timeProgramThread(timeProgram);
+    Timer programTimer{};
 
-    timeProgramThread.join();
+    system("./sleepTest");
+
+    std::cout << "Program Completed time elapsed: " << programTimer.elapsed() <<"\n";
 
     return 0;
 }
