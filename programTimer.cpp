@@ -21,14 +21,25 @@ class Timer{
         std::chrono::time_point<Clock> m_startTime{Clock::now()};
 };
 
-int main(){
+void checkForCMDarguments(const int argc){
+    if(argc != 2){
+        std::cerr << "Incorrect number of inputs. Expected 2, found " << argc <<"\n";
+        exit(EXIT_FAILURE);
+    }
+
+    return;
+}
+
+int main(int argc, char* argv[]){
+    checkForCMDarguments(argc);
+
     Timer programTimer{};
 
-    
     //Create function for system call.
     constexpr auto systemCallSuccess{0};
 
-    if(system("./sleepTest") != systemCallSuccess){
+    // if(system("./sleepTest") != systemCallSuccess){
+    if(system(argv[1]) != systemCallSuccess){
         std::cerr << "system call failed. Exiting program timer.\n";
         exit(EXIT_FAILURE);
     };
