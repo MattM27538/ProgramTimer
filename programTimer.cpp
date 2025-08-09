@@ -23,7 +23,7 @@ class Timer{
 
 void checkForCMDarguments(const int argc){
     if(argc != 2){
-        std::cerr << "Incorrect number of inputs. Expected 2, found " << argc <<"\n";
+        std::cerr << "Incorrect number of inputs. Expected 2, found " << argc <<" Exiting program timer.\n";
         exit(EXIT_FAILURE);
     }
 
@@ -38,9 +38,8 @@ int main(int argc, char* argv[]){
     //Create function for system call.
     constexpr auto systemCallSuccess{0};
 
-    // if(system("./sleepTest") != systemCallSuccess){
     if(system(argv[1]) != systemCallSuccess){
-        std::cerr << "system call failed. Exiting program timer.\n";
+        std::cerr << "System call failed. Exiting program timer.\n";
         exit(EXIT_FAILURE);
     };
 
