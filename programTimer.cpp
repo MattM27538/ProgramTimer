@@ -1,7 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <cstdlib> //for system()
-#include <unistd.h> //delete after removing sleep()/need for exec?
+// #include <unistd.h> //delete after removing sleep()/need for exec?
 
 class Timer{
     public:
@@ -30,18 +30,23 @@ void checkForCMDarguments(const int argc){
     return;
 }
 
+void callExternalExecutable(const char* executable){
+    constexpr auto systemCallSuccess{0};
+
+    if(system(executable) != systemCallSuccess){
+        std::cerr << "System call failed. Exiting program timer.\n";
+        exit(EXIT_FAILURE);
+    };
+
+    return;
+}
+
 int main(int argc, char* argv[]){
     checkForCMDarguments(argc);
 
     Timer programTimer{};
 
-    //Create function for system call.
-    constexpr auto systemCallSuccess{0};
-
-    if(system(argv[1]) != systemCallSuccess){
-        std::cerr << "System call failed. Exiting program timer.\n";
-        exit(EXIT_FAILURE);
-    };
+    callExternalExecutable(argv[1]);
 
     std::cout << "Program Completed time elapsed: " << programTimer.elapsed() <<"\n";
 
