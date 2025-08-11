@@ -1,7 +1,6 @@
 #include <iostream>
 #include <chrono>
-#include <cstdlib> //for system()
-// #include <unistd.h> //delete after removing sleep()/need for exec?
+#include <cstdlib>
 
 class Timer{
     public:
@@ -30,25 +29,40 @@ void checkForCMDarguments(const int argc){
     return;
 }
 
-void callExternalExecutable(const char* executable){
+void callExternalExecutable(const char* executable, Timer& programTimer, const int numOfExecutableCalls, double& totalRunTime){
     constexpr auto systemCallSuccess{0};
 
-    if(system(executable) != systemCallSuccess){
-        std::cerr << "System call failed. Exiting program timer.\n";
-        exit(EXIT_FAILURE);
-    };
+    for(int i{0}; i<numOfExecutableCalls; ++i){
+        if(system(executable) != systemCallSuccess){
+            std::cerr << "System call failed. Exiting program timer.\n";
+            exit(EXIT_FAILURE);
+        };
+
+        totalRunTime+=programTimer.elapsed();
+
+        programTimer.reset();
+    }
 
     return;
 }
 
+
+
 int main(int argc, char* argv[]){
     checkForCMDarguments(argc);
 
+    const char* executable{argv[1]};
+    
+    constexpr auto numOfExecutableCalls{10};
+    
+    double totalRunTime{0.0};
+    
     Timer programTimer{};
 
-    callExternalExecutable(argv[1]);
+    callExternalExecutable(executable, programTimer, numOfExecutableCalls, totalRunTime);
 
-    std::cout << "Program Completed time elapsed: " << programTimer.elapsed() <<"\n";
+    std::cout << "Program Completed. Total time elapsed: " << totalRunTime <<"\n";
+    std::cout << "Average time elapsed for program: " << totalRunTime/numOfExecutableCalls <<"\n";
 
     return EXIT_SUCCESS;
 }
