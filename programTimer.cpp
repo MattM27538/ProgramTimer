@@ -20,13 +20,12 @@ class Timer{
         std::chrono::time_point<Clock> m_startTime{Clock::now()};
 };
 
-void checkForCMDarguments(const int argc){
-    if(argc != 2){
-        std::cerr << "Incorrect number of inputs. Expected 2, found " << argc <<" Exiting program timer.\n";
-        exit(EXIT_FAILURE);
+bool checkForCMDArguments(const int argc){
+    if(argc == 2){
+        return true;
     }
 
-    return;
+    return false;
 }
 
 void callExternalExecutable(const char* executable, Timer& programTimer, const int numOfExecutableCalls, double& totalRunTime){
@@ -49,7 +48,10 @@ void callExternalExecutable(const char* executable, Timer& programTimer, const i
 
 
 int main(int argc, char* argv[]){
-    checkForCMDarguments(argc);
+    if(checkForCMDArguments(argc) == false){
+        std::cerr << "Incorrect number of inputs. Expected 2, found " << argc <<" Exiting program timer.\n";
+        exit(EXIT_FAILURE);
+    }
 
     const char* executable{argv[1]};
     
